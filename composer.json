@@ -1,0 +1,96 @@
+{
+	"name": "wot-php/wot-td",
+	"description": "A lightweight PHP library for working with Web of Things (WoT) Thing Descriptions (TD).",
+	"type": "library",
+	"keywords": [
+		"web-of-things",
+		"wot",
+		"thing-description",
+		"iot",
+		"internet-of-things",
+		"json-ld",
+		"schema-validation",
+		"json-schema"
+	],
+	"authors": [
+		{
+			"name": "Doğu Abaris",
+			"email": "abaris@null.net"
+		}
+	],
+	"license": "MIT",
+	"require": {
+		"php": ">=8.1",
+		"justinrainbow/json-schema": "^6.0"
+	},
+	"require-dev": {
+		"squizlabs/php_codesniffer": "^3.11",
+		"ockcyp/covers-validator": "v1.6.0",
+		"php-parallel-lint/php-console-highlighter": "1.0.0",
+		"php-parallel-lint/php-parallel-lint": "^1.4",
+		"phpunit/phpunit": "^9.6",
+		"phan/phan": "^5.3",
+		"spatie/phpunit-watcher": "^1.24",
+		"phpstan/phpstan": "^2.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"WoT\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"WoT\\Tests\\": "tests/"
+		}
+	},
+	"scripts": {
+		"test": [
+			"parallel-lint . --exclude vendor",
+			"vendor/bin/phpunit",
+			"covers-validator",
+			"phpcs -sp --cache",
+			"phan --allow-polyfill-parser --long-progress-bar",
+			"vendor/bin/phpstan analyse"
+		],
+		"fix": [
+			"phpcbf"
+		],
+		"phpstan": "vendor/bin/phpstan analyse",
+		"phan": "phan -d . --long-progress-bar",
+		"phpcs": "phpcs -sp --cache",
+		"start-server": "php -S localhost:8000 -t examples > server.log 2>&1 &",
+		"stop-server": "kill $(lsof -t -i:8000) || true",
+		"test-description": [
+			"@start-server",
+			"sleep 2",
+			"php examples/thing-description.php",
+			"@stop-server"
+		],
+		"test-generate": [
+			"@start-server",
+			"sleep 2",
+			"php examples/generate_td.php",
+			"@stop-server"
+		],
+		"test-interact": [
+			"@start-server",
+			"sleep 2",
+			"php examples/interact_with_device.php",
+			"@stop-server"
+		],
+		"test-parse": [
+			"@start-server",
+			"sleep 2",
+			"php examples/parse_td.php",
+			"@stop-server"
+		]
+	},
+	"config": {
+		"prepend-autoloader": false,
+		"optimize-autoloader": true,
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"symfony/flex": true
+		}
+	}
+}
