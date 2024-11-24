@@ -1,6 +1,6 @@
 {
 	"name": "wot-php/wot-td",
-	"description": "A lightweight PHP library for working with Web of Things (WoT) Thing Descriptions (TD).",
+	"description": "An open-source, lightweight PHP library for working with Web of Things (WoT) Thing Descriptions (TD).",
 	"type": "library",
 	"keywords": [
 		"web-of-things",
