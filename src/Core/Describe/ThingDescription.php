@@ -96,10 +96,6 @@ class ThingDescription
      */
     public function addProperty(string $name, array $definition): self
     {
-        if (!isset($this->data["properties"])) {
-            $this->data["properties"] = [];
-        }
-
         if (!isset($definition["forms"])) {
             throw new InvalidArgumentException("Each property must have a 'forms' key.");
         }
