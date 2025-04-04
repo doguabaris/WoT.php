@@ -2,6 +2,11 @@
 
 An open-source, lightweight PHP library for working with [**Web of Things (WoT)**](https://www.w3.org/WoT/) Thing Descriptions (TD). It includes features to parse, validate, and generate TD documents. It adheres to the [W3C TD JSON Schema](https://github.com/w3c/wot-thing-description/blob/main/validation/td-json-schema-validation.json) but does not follow the [W3C WoT Scripting API](https://www.w3.org/TR/wot-scripting-api).
 
+[![Latest Stable Version](https://poser.pugx.org/wot-php/wot-td/v?style=for-the-badge)](https://packagist.org/packages/wot-php/wot-td)
+[![Latest Unstable Version](https://poser.pugx.org/wot-php/wot-td/v/unstable?style=for-the-badge)](https://packagist.org/packages/wot-php/wot-td)
+[![License](https://poser.pugx.org/wot-php/wot-td/license?style=for-the-badge)](https://packagist.org/packages/wot-php/wot-td)
+[![PHP Version Require](https://poser.pugx.org/wot-php/wot-td/require/php?style=for-the-badge)](https://packagist.org/packages/wot-php/wot-td)
+
 ## Features
 
 - Describe and document Thing Descriptions programmatically.
