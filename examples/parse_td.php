@@ -1,8 +1,8 @@
 <?php
 
+use WoT\Core\Describe\ThingDescription;
 use WoT\Core\Parse\Parser;
 use WoT\Core\Validate\Validator;
-use WoT\Core\Describe\ThingDescription;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -44,10 +44,10 @@ try {
     print_r($parsedData);
 
     $thingDescription = new ThingDescription();
-    $thingDescription
-        ->setTitle($parsedData['title'])
-        ->addProperty('temperature', $parsedData['properties']['temperature'])
-        ->addProperty('status', $parsedData['properties']['status']);
+    $thingDescription->setTitle($parsedData['title'])->addProperty(
+        'temperature',
+        $parsedData['properties']['temperature']
+    )->addProperty('status', $parsedData['properties']['status']);
 
     Validator::validate($thingDescription);
 

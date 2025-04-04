@@ -21,11 +21,11 @@
 
 namespace WoT\Core\Validate;
 
-use WoT\Core\Describe\ThingDescription;
 use InvalidArgumentException;
 use JsonSchema\Constraints\Factory;
 use JsonSchema\Validator as JsonSchemaValidator;
 use stdClass;
+use WoT\Core\Describe\ThingDescription;
 
 /**
  * Validator
@@ -52,7 +52,7 @@ class Validator
      *
      * @since 0.1.0
      *
-     * @param ThingDescription $data  The data to be validated. Can be an associative
+     * @param ThingDescription $data The data to be validated. Can be an associative
      *                                array or an object.
      *
      * @throws InvalidArgumentException If the schema file is invalid, or validation
@@ -79,9 +79,14 @@ class Validator
         $validator->validate($data, $schema);
 
         if (!$validator->isValid()) {
+            /** @var array<int, array{property: string, message: string}> $rawErrors */
+            $rawErrors = $validator->getErrors();
+
             $errors = array_map(
-                fn($error) => "[{$error['property']}] {$error['message']}",
-                $validator->getErrors()
+                static function (array $error): string {
+                    return "[{$error['property']}] {$error['message']}";
+                },
+                $rawErrors
             );
             throw new InvalidArgumentException("Validation failed: " . implode(", ", $errors));
         }
@@ -105,29 +110,36 @@ class Validator
     private static function preprocessData(ThingDescription $data): stdClass
     {
         $data = $data->toArray();
+        /** @var array<string, mixed> $data */
 
         if (isset($data['@context']) && is_string($data['@context'])) {
             $data['@context'] = [ $data['@context'] ];
         }
 
         if (isset($data['properties']) && is_array($data['properties'])) {
-            $data['properties'] = (object)array_map(static function ($property, $key) {
-                if (!is_array($property)) {
-                    return $property;
-                }
-                if (!isset($property['forms'])) {
-                    $property['forms'] = [
-                        (object)[
-                            "href" => "/properties/$key",
-                            "op" => [ "readproperty" ],
-                        ],
-                    ];
-                } else {
-                    $property['forms'] = array_map(fn($form) => (object)$form, $property['forms']);
-                }
+            /** @var array<string, array<string, mixed>> $properties */
+            $properties = $data['properties'];
 
-                return (object)$property;
-            }, $data['properties'], array_keys($data['properties']));
+            $data['properties'] = (object)array_map(
+                static function (array $property, string $key): object {
+                    if (!isset($property['forms']) || !is_array($property['forms'])) {
+                        $property['forms'] = [
+                            (object)[
+                                "href" => "/properties/$key",
+                                "op" => [ "readproperty" ],
+                            ],
+                        ];
+                    } else {
+                        /** @var array<int, array<string, mixed>> $forms */
+                        $forms = $property['forms'];
+                        $property['forms'] = array_map(fn(array $form): object => (object)$form, $forms);
+                    }
+
+                    return (object)$property;
+                },
+                $properties,
+                array_keys($properties)
+            );
         }
 
         if (!isset($data['security'])) {

@@ -20,8 +20,8 @@
 
 namespace WoT\Core\Generate;
 
-use WoT\Core\Describe\ThingDescription;
 use RuntimeException;
+use WoT\Core\Describe\ThingDescription;
 
 /**
  * Generator
@@ -60,6 +60,7 @@ class Generator
         if ($json === false) {
             throw new RuntimeException('JSON encoding failed: ' . json_last_error_msg());
         }
+
         return $json;
     }
 }

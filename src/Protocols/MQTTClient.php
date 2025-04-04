@@ -49,7 +49,7 @@ class MQTTClient
      *
      * @since 0.1.0
      *
-     * @param string $topic   The MQTT topic to which the message will be published.
+     * @param string $topic The MQTT topic to which the message will be published.
      * @param string $message The message to be published to the specified topic.
      *
      * @throws RuntimeException Always, as the implementation is not complete.

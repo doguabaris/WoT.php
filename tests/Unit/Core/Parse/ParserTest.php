@@ -2,9 +2,9 @@
 
 namespace WoT\Tests\Unit\Core\Parse;
 
-use WoT\Core\Parse\Parser;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use WoT\Core\Parse\Parser;
 
 /**
  * @covers \WoT\Core\Parse\Parser

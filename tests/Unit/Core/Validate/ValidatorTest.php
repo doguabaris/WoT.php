@@ -2,10 +2,10 @@
 
 namespace WoT\Tests\Unit\Core\Validate;
 
-use WoT\Core\Describe\ThingDescription;
-use WoT\Core\Validate\Validator;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use WoT\Core\Describe\ThingDescription;
+use WoT\Core\Validate\Validator;
 
 /**
  * @covers \WoT\Core\Validate\Validator
@@ -19,22 +19,22 @@ class ValidatorTest extends TestCase
     {
         $td = new ThingDescription();
         $td->setTitle("Valid Device")->addProperty("temperature", [
-                "type" => "number",
-                "forms" => [
-                    [
-                        "href" => "/properties/temperature",
-                        "op" => [ "readproperty" ],
-                    ],
+            "type" => "number",
+            "forms" => [
+                [
+                    "href" => "/properties/temperature",
+                    "op" => [ "readproperty" ],
                 ],
-            ])->addProperty("status", [
-                "type" => "boolean",
-                "forms" => [
-                    [
-                        "href" => "/properties/status",
-                        "op" => [ "readproperty" ],
-                    ],
+            ],
+        ])->addProperty("status", [
+            "type" => "boolean",
+            "forms" => [
+                [
+                    "href" => "/properties/status",
+                    "op" => [ "readproperty" ],
                 ],
-            ]);
+            ],
+        ]);
 
         Validator::validate($td);
         $this->assertSame(

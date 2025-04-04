@@ -49,7 +49,7 @@ class CoAPClient
      *
      * @since 0.1.0
      *
-     * @param string $uri    The URI of the resource to interact with.
+     * @param string $uri The URI of the resource to interact with.
      * @param string $method The HTTP-like method to use for the request
      *                       (e.g., "GET", "POST"). Defaults to "GET".
      *

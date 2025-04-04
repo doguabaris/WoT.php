@@ -54,10 +54,11 @@ class Parser
     public static function parse(string $json): array
     {
         $data = json_decode($json, true);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new InvalidArgumentException("Invalid JSON format: " . json_last_error_msg());
+        if (!is_array($data)) {
+            throw new InvalidArgumentException("Expected JSON to decode into an array.");
         }
 
+        /** @var array<string, mixed> $data */
         return $data;
     }
 }

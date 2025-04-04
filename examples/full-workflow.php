@@ -7,51 +7,48 @@ use WoT\Core\Generate\Generator;
 use WoT\Core\Parse\Parser;
 use WoT\Core\Validate\Validator;
 
-// Step 1: Create a Thing Description object
 $td = new ThingDescription();
-$td->setTitle("Smart Thermostat")
-    ->addProperty("temperature", [
+$td->setTitle("Smart Thermostat")->addProperty("temperature", [
         "type" => "number",
         "forms" => [
             [
                 "href" => "/properties/temperature",
-                "op" => ["readproperty"]
-            ]
-        ]
-    ])
-    ->addProperty("status", [
+                "op" => [ "readproperty" ],
+            ],
+        ],
+    ])->addProperty("status", [
         "type" => "boolean",
         "forms" => [
             [
                 "href" => "/properties/status",
-                "op" => ["readproperty"]
-            ]
-        ]
+                "op" => [ "readproperty" ],
+            ],
+        ],
     ]);
 
-// Step 2: Generate JSON from the Thing Description
 echo "Generating Thing Description JSON...\n";
 $generatedJson = Generator::generate($td);
 echo $generatedJson;
 
-// Step 3: Parse the generated JSON back to an array
 echo "\nParsing Generated JSON...\n";
 try {
     $parsedData = Parser::parse($generatedJson);
     print_r($parsedData);
 } catch (InvalidArgumentException $e) {
     echo "Error parsing JSON: " . $e->getMessage();
-    exit;
+    exit(1);
 }
 
-// Step 4: Validate the parsed Thing Description
+assert(is_array($parsedData));
+/** @var array<string, mixed> $data */
+$data = $parsedData;
+
 echo "\nValidating Thing Description...\n";
 try {
     $thingDescription = new ThingDescription();
-    $thingDescription
-        ->setTitle($parsedData['title'])
-        ->addProperty('temperature', $parsedData['properties']['temperature'])
-        ->addProperty('status', $parsedData['properties']['status']);
+    $thingDescription->setTitle($data['title'])
+        ->addProperty('temperature', $data['properties']['temperature'])
+        ->addProperty('status', $data['properties']['status']);
 
     Validator::validate($thingDescription);
 

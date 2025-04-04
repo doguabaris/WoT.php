@@ -2,10 +2,10 @@
 
 namespace WoT\Tests\Unit\Core\Generate;
 
+use PHPUnit\Framework\TestCase;
 use WoT\Core\Describe\ThingDescription;
 use WoT\Core\Generate\Generator;
 use WoT\Core\Parse\Parser;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \WoT\Core\Generate\Generator
@@ -19,22 +19,22 @@ class GeneratorTest extends TestCase
     {
         $td = new ThingDescription();
         $td->setTitle("My Device")->addProperty("temperature", [
-                "type" => "number",
-                "forms" => [
-                    [
-                        "href" => "/properties/temperature",
-                        "op" => [ "readproperty" ],
-                    ],
+            "type" => "number",
+            "forms" => [
+                [
+                    "href" => "/properties/temperature",
+                    "op" => [ "readproperty" ],
                 ],
-            ])->addProperty("status", [
-                "type" => "boolean",
-                "forms" => [
-                    [
-                        "href" => "/properties/status",
-                        "op" => [ "readproperty" ],
-                    ],
+            ],
+        ])->addProperty("status", [
+            "type" => "boolean",
+            "forms" => [
+                [
+                    "href" => "/properties/status",
+                    "op" => [ "readproperty" ],
                 ],
-            ]);
+            ],
+        ]);
 
         $generatedJson = Generator::generate($td);
 
@@ -42,9 +42,16 @@ class GeneratorTest extends TestCase
 
         $parsedData = Parser::parse($generatedJson);
 
+        /** @var array<string, mixed> $parsedData */
         $this->assertSame("My Device", $parsedData['title']);
         $this->assertArrayHasKey("properties", $parsedData);
-        $this->assertArrayHasKey("temperature", $parsedData['properties']);
-        $this->assertSame("number", $parsedData['properties']['temperature']['type']);
+
+        /** @var array<string, mixed> $properties */
+        $properties = $parsedData['properties'];
+        $this->assertArrayHasKey("temperature", $properties);
+
+        /** @var array<string, mixed> $temperature */
+        $temperature = $properties['temperature'];
+        $this->assertSame("number", $temperature['type']);
     }
 }

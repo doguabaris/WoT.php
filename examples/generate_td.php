@@ -6,24 +6,22 @@ use WoT\Core\Generate\Generator;
 require __DIR__ . '/../vendor/autoload.php';
 
 $td = new ThingDescription();
-$td->setTitle("My Device")
-    ->addProperty("temperature", [
+$td->setTitle("My Device")->addProperty("temperature", [
         "type" => "number",
         "forms" => [
             [
                 "href" => "/properties/temperature",
-                "op" => ["readproperty"]
-            ]
-        ]
-    ])
-    ->addProperty("status", [
+                "op" => [ "readproperty" ],
+            ],
+        ],
+    ])->addProperty("status", [
         "type" => "boolean",
         "forms" => [
             [
                 "href" => "/properties/status",
-                "op" => ["readproperty"]
-            ]
-        ]
+                "op" => [ "readproperty" ],
+            ],
+        ],
     ]);
 
 $generatedTD = Generator::generate($td);

@@ -61,6 +61,7 @@ class ThingDescription
                 "nosec" => (object)[ "scheme" => "nosec" ],
             ],
             "security" => [ "nosec" ],
+            "properties" => [],
         ];
     }
 
@@ -87,7 +88,7 @@ class ThingDescription
      *
      * @since 0.1.0
      *
-     * @param string $name      The name of the property.
+     * @param string $name The name of the property.
      * @param array<string, mixed> $definition The definition of the property, including "forms".
      *
      * @throws InvalidArgumentException If the definition does not contain a "forms" key.
@@ -100,7 +101,12 @@ class ThingDescription
             throw new InvalidArgumentException("Each property must have a 'forms' key.");
         }
 
-        $this->data["properties"][$name] = $definition;
+        /**
+         * @var array<string, mixed> $properties
+         */
+        $properties = $this->data["properties"];
+        $properties[$name] = $definition;
+        $this->data["properties"] = $properties;
 
         return $this;
     }
@@ -114,7 +120,10 @@ class ThingDescription
      */
     public function toArray(): array
     {
-        return $this->data;
+        /** @var array<string, mixed> $data */
+        $data = $this->data;
+
+        return $data;
     }
 
     /**

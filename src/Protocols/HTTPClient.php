@@ -49,8 +49,8 @@ class HTTPClient
      *
      * @since 0.1.0
      *
-     * @param string $url    The URL of the resource to interact with.
-     * @param array $data    The data to include in the request body (default: empty array).
+     * @param string $url The URL of the resource to interact with.
+     * @param array<string, mixed> $data The data to include in the request body (default: empty array).
      * @param string $method The HTTP method to use for the request (default: "GET").
      *
      * @throws RuntimeException If the HTTP request fails.

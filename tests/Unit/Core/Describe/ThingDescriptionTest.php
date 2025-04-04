@@ -2,9 +2,9 @@
 
 namespace WoT\Tests\Unit\Core\Describe;
 
-use WoT\Core\Describe\ThingDescription;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use WoT\Core\Describe\ThingDescription;
 
 /**
  * @covers \WoT\Core\Describe\ThingDescription
@@ -26,8 +26,13 @@ class ThingDescriptionTest extends TestCase
         $securityDefinitions = $td->toArray()['securityDefinitions'];
         $this->assertIsObject($securityDefinitions);
         $this->assertTrue(property_exists($securityDefinitions, 'nosec'));
-        $this->assertSame('nosec', $securityDefinitions->nosec->scheme);
-
+        $this->assertIsObject($securityDefinitions->nosec);
+        /** @var object $nosec */
+        $nosec = $securityDefinitions->nosec;
+        $this->assertObjectHasProperty('scheme', $nosec);
+        /** @var string $scheme */
+        $scheme = ((array)$nosec)['scheme'];
+        $this->assertSame('nosec', $scheme);
         $this->assertSame([ "nosec" ], $td->toArray()['security']);
     }
 
@@ -58,9 +63,15 @@ class ThingDescriptionTest extends TestCase
             ],
         ]);
 
+        /** @var array<string, mixed> $properties */
         $properties = $td->toArray()['properties'];
+
         $this->assertArrayHasKey('temperature', $properties);
-        $this->assertSame('number', $properties['temperature']['type']);
+
+        /** @var array<string, mixed> $temperature */
+        $temperature = $properties['temperature'];
+
+        $this->assertSame('number', $temperature['type']);
     }
 
     /**
