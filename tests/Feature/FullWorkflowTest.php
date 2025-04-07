@@ -1,6 +1,6 @@
 <?php
 
-namespace WoT\Tests\Integration;
+namespace WoT\Tests\Feature;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
